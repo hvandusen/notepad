@@ -12,6 +12,10 @@ a {
   margin-top: 0px;
 }
 
+#text {
+      min-height: calc(100vh - 80px);
+}
+
 #textbox {
   resize: none;
   height: auto;

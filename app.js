@@ -61,10 +61,9 @@ io.on('connection', function(socket){
   });
   // additional callbacks here
   socket.on("textUpdate",function(obj){
-
-    console.log(socket.id)
-    socket.broadcast.emit('newText', {data: textString});
     textString = obj.data;
+    socket.broadcast.emit('newText', {data: textString});
+
   })
 });
 
