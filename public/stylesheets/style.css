@@ -1,0 +1,26 @@
+body {
+  padding: 20px;
+  margin: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.trumbowyg-box, .trumbowyg-editor {
+  margin-top: 0px;
+}
+
+#textbox {
+  resize: none;
+  height: auto;
+  width: 80vw;
+  height: 80vh;
+  font-size: 32px;
+  text-align: left;
+    padding-left:0;
+    padding-top:0;
+    padding-bottom:0.4em;
+    padding-right: 0.4em;
+}
