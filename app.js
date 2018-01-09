@@ -8,6 +8,7 @@ var normalizePort = require("normalize-port");
 var index = require('./routes/index');
 var users = require('./routes/users');
 var update = require('./routes/update');
+var MongoClient = require('mongodb').MongoClient;
 var textString = "";
 var app = express();
 var http = require('http').Server(app);
@@ -16,6 +17,53 @@ var port = normalizePort(process.env.PORT || "8081")
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+function stringifyDate(){
+  return new Date().toString().split(" ").slice(0,3).join("-");
+}
+var url = "mongodb://kay:"+process.env.MONGO_PW +"@mycluster0-shard-00-00-wpeiv.mongodb.net:27017,mycluster0-shard-00-01-wpeiv.mongodb.net:27017,mycluster0-shard-00-02-wpeiv.mongodb.net:27017/admin?ssl=true&replicaSet=Mycluster0-shard-0&authSource=admin";
+var uri = "mongodb://hvandusen:"+process.env.MONGO_PW+"@hankscluster-shard-00-00-dtp7l.mongodb.net:27017,hankscluster-shard-00-01-dtp7l.mongodb.net:27017,hankscluster-shard-00-02-dtp7l.mongodb.net:27017/admin?replicaSet=HanksCluster-shard-0&ssl=true"
+MongoClient.connect(uri, function(err, mongoClient) {
+    var db = mongoClient.db("notepad");
+    //find the record from today
+    db.collection("notepad").find({"dateId":stringifyDate()}).toArray(function(err,items){
+      if(items.length)
+        textString = items[0].html
+      setText(textString);//db.collection("notepad").update({"dateId":stringifyDate()},{$set:{"jont":"u suckzzz", dateId: stringifyDate()},
+      // $currentDate: { actual: true}},{upsert:true});
+      function setText(html){
+        console.log("setting html to "+html+" at "+new Date().toString())
+        db.collection("notepad").update(
+          {
+            "dateId":stringifyDate()
+          },
+          {
+            $set:{"html":html,"dateId":stringifyDate()},
+            $currentDate: { actual: true}
+          },
+          {upsert:true}
+        )
+      }
+      io.on('connection', function(socket){
+        // connection console check
+        console.log('A user connected');
+      	socket.emit('connection',{data: textString});
+
+        // disconnect console check
+        socket.on('disconnect', function () {
+          console.log('A user disconnected');
+        });
+        // additional callbacks here
+        socket.on("textUpdate",function(obj){
+          textString = obj.data;
+          theCurrentText = obj.data
+          setText(obj.data)
+          socket.broadcast.emit('newText', {data: textString});
+
+        })
+      });
+    });
+    //db.close();
+});
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -50,21 +98,5 @@ http.listen(port,function(){
   console.log("listenin")
 })
 
-io.on('connection', function(socket){
-  // connection console check
-  console.log('A user connected');
-	socket.emit('connection',{data: textString});
-
-  // disconnect console check
-  socket.on('disconnect', function () {
-    console.log('A user disconnected');
-  });
-  // additional callbacks here
-  socket.on("textUpdate",function(obj){
-    textString = obj.data;
-    socket.broadcast.emit('newText', {data: textString});
-
-  })
-});
 
 module.exports = app;
