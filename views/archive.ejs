@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>notepad archive</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <p><a href="/">&larr; today</a></p>
+    <h1>past days</h1>
+    <% if (!days.length) { %>
+      <p>Nothing here yet. Notes are saved here at the end of each day.</p>
+    <% } %>
+    <ul class="days">
+    <% days.forEach(function(d) { %>
+      <li><a href="/archive/<%= d.date %>"><%= d.date %></a> <span class="preview"><%= d.preview %></span></li>
+    <% }) %>
+    </ul>
+  </body>
+</html>

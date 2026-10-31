@@ -1,21 +1,24 @@
 {
-  "name": "life",
-  "version": "0.0.0",
+  "name": "notepad",
+  "version": "2.0.0",
   "private": true,
+  "description": "A shared notepad that starts fresh every day and keeps an archive.",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --watch --env-file-if-exists=.env server.js",
+    "export-atlas": "node --env-file-if-exists=.env scripts/export-atlas.js"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "dependencies": {
-    "body-parser": "~1.18.2",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.9",
-    "ejs": "~2.5.7",
-    "express": "~4.15.5",
-    "mongodb": "^2.2.33",
-    "morgan": "~1.9.0",
-    "normalize-port": "^1.0.0",
-    "serve-favicon": "~2.4.5",
-    "socket.io": "^2.0.4",
-    "trumbowyg": "^2.8.1"
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "sanitize-html": "^2.17.0",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "mongodb": "^6.20.0"
   }
 }
