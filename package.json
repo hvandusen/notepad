@@ -5,9 +5,9 @@
   "description": "A shared notepad that starts fresh every day and keeps an archive.",
   "main": "server.js",
   "scripts": {
-    "start": "node --env-file-if-exists=.env server.js",
-    "dev": "node --watch --env-file-if-exists=.env server.js",
-    "export-atlas": "node --env-file-if-exists=.env scripts/export-atlas.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "export-atlas": "node scripts/export-atlas.js"
   },
   "engines": {
     "node": ">=22"

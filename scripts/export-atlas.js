@@ -10,6 +10,10 @@
 const fs = require('fs');
 const path = require('path');
 const { MongoClient } = require('mongodb');
+
+try {
+  process.loadEnvFile(path.join(__dirname, '..', '.env'));
+} catch {}
 const notes = require('../lib/notes');
 
 const uri = process.env.MONGO_URI;

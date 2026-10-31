@@ -1,4 +1,9 @@
 const path = require('path');
+
+// Load .env from this folder, however the app is started (npm start, pm2, node).
+try {
+  process.loadEnvFile(path.join(__dirname, '.env'));
+} catch {}
 const http = require('http');
 const express = require('express');
 const { Server } = require('socket.io');
@@ -10,6 +15,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { maxHttpBufferSize: 5e6 });
 
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
